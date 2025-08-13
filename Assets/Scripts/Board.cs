@@ -13,6 +13,9 @@ public class Board : MonoBehaviour
     public Vector2Int boardSize = new Vector2Int(10, 20);
     public Vector3Int spawnPosition = new Vector3Int(-1, 8, 0);
 
+    // Thêm biến lưu block tiếp theo
+    private TetrominoData nextTetrominoData;
+
     /// <summary>
     /// Vùng giới hạn của bảng chơi
     /// </summary>
@@ -24,6 +27,10 @@ public class Board : MonoBehaviour
             return new RectInt(viTriTamGiac, boardSize);
         }
     }
+    #endregion
+
+    #region Events - Sự kiện
+    public static event System.Action<int> OnLinesCleared;
     #endregion
 
     #region Unity Lifecycle - Vòng đời Unity
@@ -67,10 +74,29 @@ public class Board : MonoBehaviour
     /// </summary>
     public void TaoKhoiMoi()
     {
-        int chiSoNgauNhien = Random.Range(0, tetrominoes.Length);
-        TetrominoData duLieuKhoi = tetrominoes[chiSoNgauNhien];
+        // Nếu chưa có next block, random lần đầu
+        if (nextTetrominoData.tetromino == 0 && nextTetrominoData.tile == null)
+        {
+            int chiSoNgauNhien = Random.Range(0, tetrominoes.Length);
+            nextTetrominoData = tetrominoes[chiSoNgauNhien];
+        }
 
+        // Lấy block tiếp theo làm block hiện tại
+        TetrominoData duLieuKhoi = nextTetrominoData;
+
+        // Random block tiếp theo mới
+        int chiSoNgauNhienTiep = Random.Range(0, tetrominoes.Length);
+        nextTetrominoData = tetrominoes[chiSoNgauNhienTiep];
+
+        // Khởi tạo khối hiện tại
         activePiece.Initialize(this, spawnPosition, duLieuKhoi);
+
+        // Hiển thị block tiếp theo trên UI
+        UIManager uiManager = FindObjectOfType<UIManager>();
+        if (uiManager != null)
+        {
+            uiManager.HienThiBlockTiepTheo(nextTetrominoData);
+        }
 
         if (KiemTraViTriHopLe(activePiece, spawnPosition))
         {
@@ -88,6 +114,14 @@ public class Board : MonoBehaviour
     public void XuLyKetThucGame()
     {
         tilemap.ClearAllTiles();
+        
+        // Thông báo game over
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        if (gameManager)
+        {
+            gameManager.KetThucGame();
+        }
+        
         Debug.Log("Game Over - Trò chơi kết thúc!");
     }
     #endregion
@@ -153,17 +187,25 @@ public class Board : MonoBehaviour
     {
         RectInt vungGioiHan = VungGioiHan;
         int hangHienTai = vungGioiHan.yMin;
+        int soHangDaXoa = 0; // Thêm biến đếm
 
         while (hangHienTai < vungGioiHan.yMax)
         {
             if (KiemTraHangDay(hangHienTai))
             {
                 ThucHienXoaHang(hangHienTai);
+                soHangDaXoa++; // Tăng số hàng đã xóa
             }
             else
             {
                 hangHienTai++;
             }
+        }
+
+        // Thông báo số hàng đã xóa
+        if (soHangDaXoa > 0)
+        {
+            OnLinesCleared?.Invoke(soHangDaXoa);
         }
     }
 
