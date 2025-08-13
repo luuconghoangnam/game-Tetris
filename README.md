@@ -31,7 +31,7 @@
 Mọi đóng góp, ý kiến hoặc báo lỗi xin vui lòng tạo issue hoặc pull request trên repository này.
 
 ## Tác giả
-- Lưu Công Hoàng Nam
+- Luu Lam Cong
 
 ---
 
