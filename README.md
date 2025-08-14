@@ -24,8 +24,8 @@
 
 ## Ảnh gameplay
 
-![Gameplay 1](https://raw.githubusercontent.com/luuconghoangnam/game-Tetris/main/docs/gameplay1.png)
-![Gameplay 2](https://raw.githubusercontent.com/luuconghoangnam/game-Tetris/main/docs/gameplay2.png)
+![Gameplay 1](Images/gameplay1.png)
+![Gameplay 2](Images/gameplay2.png)
 
 ## Đóng góp
 Mọi đóng góp, ý kiến hoặc báo lỗi xin vui lòng tạo issue hoặc pull request trên repository này.

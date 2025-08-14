@@ -251,6 +251,17 @@ public class UIManager : MonoBehaviour
                 textNewRecord.gameObject.SetActive(scoreManager.DiemSoHienTai >= scoreManager.DiemCaoNhat && scoreManager.DiemSoHienTai > 0);
         }
     }
+
+    /// <summary>
+    /// Thoát game (dùng cho nút Exit)
+    /// </summary>
+    public void ThoatGame()
+    {
+        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
     #endregion
 
     #region Input handling
