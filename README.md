@@ -24,7 +24,7 @@
 
 ## Ảnh gameplay
 
-![Gameplay 1](Images/gameplay1.png)
+![Gameplay 1](Images/gameplay.png)
 ![Gameplay 2](Images/gameplay2.png)
 
 ## Đóng góp
